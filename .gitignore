@@ -4,6 +4,13 @@
 .settings
 .project
 .classpath
+data/
+/package-lock.json
+/package.json
+/src/main/dev-bundle/
+/tsconfig.json
+/types.d.ts
+/vite.config.ts
 
 *.iml
 .DS_Store

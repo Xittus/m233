@@ -1,7 +1,7 @@
-package com.raum.application.service;
+package com.example.application.service;
 
-import com.raum.application.model.Reservierung;
-import com.raum.application.repository.ReservierungsRepository;
+import com.example.application.model.Reservierung;
+import com.example.application.repository.ReservierungsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

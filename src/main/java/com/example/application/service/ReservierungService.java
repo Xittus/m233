@@ -1,23 +1,24 @@
-package com.example.application.service;
+package com.raum.application.service;
 
-import com.example.application.model.Reservierung;
+import com.raum.application.model.Reservierung;
+import com.raum.application.repository.ReservierungsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class ReservierungService {
 
-    private List<Reservierung> reservierungen = new ArrayList<>();
+    @Autowired
+    public ReservierungsRepository reservierungsRepository;
 
     public void reserviereRaum(String raumName, LocalDateTime startZeit, LocalDateTime endZeit) {
         Reservierung reservierung = new Reservierung(raumName, startZeit, endZeit);
-        reservierungen.add(reservierung);
+        reservierungsRepository.save(reservierung);
     }
 
-    public List<Reservierung> getReservierungen() {
-        return reservierungen;
+    public Iterable<Reservierung> getReservierungen() {
+        return reservierungsRepository.findAll();
     }
 }

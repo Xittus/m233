@@ -1,6 +1,6 @@
-package com.example.application.views.main;
+package com.raum.application.views.main;
 
-import com.example.application.service.ReservierungService;
+import com.raum.application.service.ReservierungService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datetimepicker.DateTimePicker;

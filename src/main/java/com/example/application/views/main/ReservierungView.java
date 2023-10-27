@@ -35,7 +35,8 @@ public class ReservierungView extends VerticalLayout {
         startZeit = new DateTimePicker("Startzeit");
         endZeit = new DateTimePicker("Endzeit");
 
-        reservierenButton = new Button("Reservieren", e -> reserviereRaum());
+        reservierenButton = new Button("Reservieren", e ->
+                reserviereRaum());
 
 
 

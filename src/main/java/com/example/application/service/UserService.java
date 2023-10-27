@@ -6,9 +6,11 @@ import com.example.application.model.Role;
 import com.example.application.model.User;
 import com.example.application.repository.UserRepository;
 import com.vaadin.flow.spring.security.AuthenticationContext;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,10 +26,11 @@ public class UserService {
         this.repository = repository;
     }
 
+    @Lock(LockModeType.PESSIMISTIC_READ)
     public Optional<User> get(Long id) {
         return repository.findById(id);
     }
-
+    @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
     public User update(User entity) {
         User user = repository.save(entity);
         return user;

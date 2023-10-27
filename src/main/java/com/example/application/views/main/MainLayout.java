@@ -18,11 +18,11 @@ public class MainLayout extends AppLayout {
     public MainLayout(SecurityService securityService) {
         this.securityService = securityService;
         createHeader();
-        createDrawer();
+
     }
 
     private void createHeader() {
-        H1 logo = new H1("Vaadin CRM");
+        H1 logo = new H1("Raumreservierung");
         logo.addClassNames(
                 LumoUtility.FontSize.LARGE,
                 LumoUtility.Margin.MEDIUM);
@@ -43,9 +43,5 @@ public class MainLayout extends AppLayout {
 
     }
 
-    private void createDrawer() {
-        addToDrawer(new VerticalLayout(
-                new RouterLink("List", ReservierungView.class)
-        ));
+
     }
-}

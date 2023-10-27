@@ -28,7 +28,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
         System.out.println(myUserDetailsService.count());
 
-        add(new H1("Vaadin CRM"), login);
+        add(new H1("Raumreservierung"), login);
     }
 
     @Override

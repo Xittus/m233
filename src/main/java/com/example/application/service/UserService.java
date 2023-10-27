@@ -2,19 +2,25 @@ package com.example.application.service;
 
 import java.util.Optional;
 
+import com.example.application.model.Role;
 import com.example.application.model.User;
 import com.example.application.repository.UserRepository;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
+    private final AuthenticationContext authenticationContext;
     private final UserRepository repository;
 
-    public UserService(UserRepository repository) {
+    public UserService(AuthenticationContext authenticationContext, UserRepository repository) {
+        this.authenticationContext = authenticationContext;
         this.repository = repository;
     }
 
@@ -23,7 +29,8 @@ public class UserService {
     }
 
     public User update(User entity) {
-        return repository.save(entity);
+        User user = repository.save(entity);
+        return user;
     }
 
     public void delete(Long id) {
@@ -44,6 +51,15 @@ public class UserService {
 
     public User save(User user) {
     	return repository.save(user);
+    }
+
+    public User getCurrentLoggedInUser() {
+       Authentication authenticatedUser = SecurityContextHolder.getContext().getAuthentication();
+    	return repository.findByUsername(authenticatedUser.getName());
+    }
+
+    public Iterable<User> findAll() {
+    	return repository.findAll();
     }
 
 }

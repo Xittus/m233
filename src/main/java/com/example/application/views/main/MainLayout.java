@@ -21,6 +21,7 @@ public class MainLayout extends AppLayout {
 
     }
 
+
     private void createHeader() {
         H1 logo = new H1("Raumreservierung");
         logo.addClassNames(
@@ -38,10 +39,19 @@ public class MainLayout extends AppLayout {
         header.addClassNames(
                 LumoUtility.Padding.Vertical.NONE,
                 LumoUtility.Padding.Horizontal.MEDIUM);
-
+    createDrawer();
         addToNavbar(header,logout);
 
     }
 
+    private void createDrawer() {
+        addToDrawer(new VerticalLayout(
+                new RouterLink("Profile", ProfileView.class),
+                new RouterLink("Edit Profile", EditProfile.class),
+                new RouterLink("Register", RegisterView.class),
+                new RouterLink("Reservierung", ReservierungView.class),
+                new RouterLink("All Users", AdminView.class)
 
+        ));
     }
+}

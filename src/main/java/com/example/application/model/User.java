@@ -14,22 +14,41 @@ public class User {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Role> roles;
-    @Column(nullable = false, unique = true)
-    private String username;
-
-    private String password;
-
+    private Role role;
 
 
     public Set<Role> getRoles() {
-        return roles;
+        return  Set.of(role);
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    public Role getRole() {
+        return role;
     }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    private String password;
+
+    private String email;
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+
+
 
     public Long getId() {
         return id;

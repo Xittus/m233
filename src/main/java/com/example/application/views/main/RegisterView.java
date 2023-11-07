@@ -24,7 +24,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import static com.vaadin.flow.component.notification.Notification.show;
 
-@Route(value = "register", layout = MainLayout.class)
+@Route(value = "register")
 @RouteAlias("register")
 @AnonymousAllowed
 public class RegisterView extends VerticalLayout {

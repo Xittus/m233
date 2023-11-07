@@ -14,14 +14,22 @@ import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authenticati
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.Mockito.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import java.util.Optional;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
-
     @Mock
     private AuthenticationContext authenticationContext;
 
@@ -31,13 +39,8 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
-    public void testGet() {
+    public void whenGetUser_thenReturnsUser() {
         // Arrange
         Long id = 1L;
         User user = new User();
@@ -47,11 +50,11 @@ public class UserServiceTest {
         Optional<User> result = userService.get(id);
 
         // Assert
-        assertEquals(Optional.of(user), result);
+        assertThat(result, is(Optional.of(user)));
     }
 
     @Test
-    public void testUpdate() {
+    public void whenUpdateUser_thenUserIsUpdated() {
         // Arrange
         User user = new User();
         when(repository.save(user)).thenReturn(user);
@@ -60,11 +63,11 @@ public class UserServiceTest {
         User result = userService.update(user);
 
         // Assert
-        assertEquals(user, result);
+        assertThat(result, is(user));
     }
 
     @Test
-    public void testDelete() {
+    public void whenDeleteUser_thenUserIsDeleted() {
         // Arrange
         Long id = 1L;
 
@@ -72,11 +75,11 @@ public class UserServiceTest {
         userService.delete(id);
 
         // Assert
-        verify(repository, times(1)).deleteById(id);
+        verify(repository).deleteById(id);
     }
 
     @Test
-    public void testList() {
+    public void whenListUsers_thenReturnsPageOfUsers() {
         // Arrange
         Pageable pageable = mock(Pageable.class);
         Page<User> page = mock(Page.class);
@@ -86,24 +89,24 @@ public class UserServiceTest {
         Page<User> result = userService.list(pageable);
 
         // Assert
-        assertEquals(page, result);
+        assertThat(result, is(page));
     }
 
     @Test
-    public void testCount() {
+    public void whenCountUsers_thenReturnsCount() {
         // Arrange
         long count = 10L;
         when(repository.count()).thenReturn(count);
 
         // Act
-        int result = userService.count();
+        long result = userService.count();
 
         // Assert
-        assertEquals((int) count, result);
+        assertThat(result, is(count));
     }
 
     @Test
-    public void testSave() {
+    public void whenSaveUser_thenUserIsSaved() {
         // Arrange
         User user = new User();
         when(repository.save(user)).thenReturn(user);
@@ -112,7 +115,7 @@ public class UserServiceTest {
         User result = userService.save(user);
 
         // Assert
-        assertEquals(user, result);
+        assertThat(result, is(user));
     }
 
 

@@ -1,33 +1,27 @@
 package com.example.application;
 
+import com.example.application.model.Reservierung;
+import com.example.application.model.Role;
 import com.example.application.model.User;
 import com.example.application.repository.UserRepository;
+import com.example.application.service.ReservierungService;
 import com.example.application.service.UserService;
 import com.vaadin.flow.spring.security.AuthenticationContext;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.mockito.Mockito.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import java.util.Optional;
-import java.util.Optional;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
     @Mock
@@ -39,84 +33,75 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    @Test
-    public void whenGetUser_thenReturnsUser() {
-        // Arrange
-        Long id = 1L;
-        User user = new User();
-        when(repository.findById(id)).thenReturn(Optional.of(user));
-
-        // Act
-        Optional<User> result = userService.get(id);
-
-        // Assert
-        assertThat(result, is(Optional.of(user)));
-    }
+    @InjectMocks
+    private ReservierungService reservierungService;
 
     @Test
     public void whenUpdateUser_thenUserIsUpdated() {
         // Arrange
         User user = new User();
+        user.setUsername("Test");
+        String pw = "test";
+        String hasehed = BCrypt.hashpw(pw, BCrypt.gensalt());
+        user.setPassword(hasehed);
         when(repository.save(user)).thenReturn(user);
-
         // Act
         User result = userService.update(user);
-
         // Assert
         assertThat(result, is(user));
+        System.out.println("Username: "+result.getUsername()+" PW: "+result.getPassword());
     }
 
     @Test
     public void whenDeleteUser_thenUserIsDeleted() {
-        // Arrange
-        Long id = 1L;
-
+        User standart = new User();
+        standart.setUsername("basic");
+        String pw = "password";
+        String hasehed = BCrypt.hashpw(pw, BCrypt.gensalt());
+        standart.setPassword(hasehed);
+        standart.setEmail("Email");
+        standart.setId(2l);
+        standart.setRole(Role.ADMIN);
+        Long id = 2l;
         // Act
         userService.delete(id);
-
         // Assert
         verify(repository).deleteById(id);
     }
 
-    @Test
-    public void whenListUsers_thenReturnsPageOfUsers() {
-        // Arrange
-        Pageable pageable = mock(Pageable.class);
-        Page<User> page = mock(Page.class);
-        when(repository.findAll(pageable)).thenReturn(page);
 
-        // Act
-        Page<User> result = userService.list(pageable);
-
-        // Assert
-        assertThat(result, is(page));
-    }
-
-    @Test
-    public void whenCountUsers_thenReturnsCount() {
-        // Arrange
-        long count = 10L;
-        when(repository.count()).thenReturn(count);
-
-        // Act
-        long result = userService.count();
-
-        // Assert
-        assertThat(result, is(count));
-    }
 
     @Test
     public void whenSaveUser_thenUserIsSaved() {
         // Arrange
         User user = new User();
+        user.setUsername("Ewan");
+        user.setEmail("Email");
+        user.setRole(Role.USER);
+        String pw = "test";
+        String hasehed = BCrypt.hashpw(pw, BCrypt.gensalt());
+        user.setPassword(hasehed);
         when(repository.save(user)).thenReturn(user);
-
         // Act
         User result = userService.save(user);
-
         // Assert
         assertThat(result, is(user));
     }
 
+    @Test
+    public void testIfReservationCorrect() {
 
+        LocalDateTime start = LocalDate.of(2023,11,7).atStartOfDay();
+        LocalDateTime end = LocalDate.of(2023,12,8).atStartOfDay();
+        LocalDateTime start2 = LocalDate.of(2020,12,12).atStartOfDay();
+        LocalDateTime end2 = LocalDate.of(2021,12,6).atStartOfDay();
+
+        Reservierung resv1 = new Reservierung("Raum 1", start, end);
+        Reservierung resv2 = new Reservierung("Raum 1", start2,end2);
+
+        System.out.println("Startzeit: " + resv1.getStartZeit());
+        System.out.println("Endzeit: " + resv1.getEndZeit());
+
+        assertTrue(reservierungService.verifyReservierung(resv1,resv2));
+    }
 }

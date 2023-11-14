@@ -21,4 +21,17 @@ public class ReservierungService {
     public Iterable<Reservierung> getReservierungen() {
         return reservierungsRepository.findAll();
     }
+
+    public boolean verifyReservierung(Reservierung reservierung1,Reservierung reservierung2){
+        if (reservierung1.getStartZeit().isBefore(reservierung2.getStartZeit())){
+            return true;
+        } else if (reservierung1.getStartZeit().isEqual(reservierung2.getStartZeit())) {
+            return false;
+        } else if (reservierung1.getStartZeit().isAfter(reservierung2.getStartZeit())) {
+            return true;
+        } else {
+            System.out.println("Fehler");
+            return false;
+        }
+    }
 }

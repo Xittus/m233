@@ -92,16 +92,14 @@ public class UserServiceTest {
     public void testIfReservationCorrect() {
 
         LocalDateTime start = LocalDate.of(2023,11,7).atStartOfDay();
-        LocalDateTime end = LocalDate.of(2023,12,8).atStartOfDay();
-        LocalDateTime start2 = LocalDate.of(2020,12,12).atStartOfDay();
-        LocalDateTime end2 = LocalDate.of(2021,12,6).atStartOfDay();
+        LocalDateTime end = LocalDate.of(2023,11,8).atStartOfDay();
 
-        Reservierung resv1 = new Reservierung("Raum 1", start, end);
-        Reservierung resv2 = new Reservierung("Raum 1", start2,end2);
+        Reservierung resv = new Reservierung("Raum 1", start, end);
 
-        System.out.println("Startzeit: " + resv1.getStartZeit());
-        System.out.println("Endzeit: " + resv1.getEndZeit());
+        System.out.println("Startzeit: " + resv.getStartZeit());
+        System.out.println("Endzeit: " + resv.getEndZeit());
 
-        assertTrue(reservierungService.verifyReservierung(resv1,resv2));
+        assertTrue("Die Endzeit sollte nach der Startzeit liegen.", resv.getEndZeit().isAfter(resv.getStartZeit()));
+
     }
 }

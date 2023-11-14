@@ -46,7 +46,6 @@ public class ReservierungView extends VerticalLayout {
     private void reserviereRaum() {
         try {
             reservierungService.reserviereRaum(raumAuswahl.getValue(), startZeit.getValue(), endZeit.getValue());
-            Notification.show("Raum erfolgreich reserviert.");
         } catch (Exception e) {
             Notification.show("Fehler bei der Reservierung: " + e.getMessage(), 3000, Notification.Position.MIDDLE);
         }
